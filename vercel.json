@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.mjs" },
+    { "source": "/link", "destination": "/link.html" },
+    { "source": "/message", "destination": "/message.html" },
+    { "source": "/file", "destination": "/file.html" },
+    { "source": "/qr", "destination": "/qr.html" },
+    { "source": "/reports", "destination": "/reports.html" },
+    { "source": "/watch", "destination": "/watch.html" },
+    { "source": "/accuracy", "destination": "/accuracy.html" },
+    { "source": "/help", "destination": "/help.html" },
+    { "source": "/about", "destination": "/about.html" }
+  ]
+}

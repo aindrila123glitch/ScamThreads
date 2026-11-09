@@ -24,10 +24,14 @@ for(const line of (await load('malware-hashes.txt','')).split(/\r?\n/)){
   if(trimmed && !trimmed.startsWith('#') && /^[0-9a-f]{64}$/i.test(trimmed)) malwareHashes.add(trimmed.toLowerCase());
 }
 const reports=(await load('reports.jsonl','')).split('\n').filter(Boolean).map(JSON.parse);
-let salt=await load('.campaign-key','');
+let salt=process.env.CAMPAIGN_KEY || (await load('.campaign-key',''));
 if(!salt){
   salt=randomUUID();
-  await writeFile(local('.campaign-key'),salt,{flag:'wx'});
+  try{
+    await writeFile(local('.campaign-key'),salt,{flag:'wx'});
+  }catch{
+    // Read-only filesystem in serverless environments (e.g. Vercel)
+  }
 }
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const indicator=value=>typeof value==='string'&&value?createHmac('sha256',salt).update(value).digest('hex'):null;
@@ -47,12 +51,16 @@ async function body(req){
   return JSON.parse(Buffer.concat(chunks).toString());
 }
 async function registry(){
-  const config=JSON.parse(await load('chain/deployment.json','null'));
-  if(!config)throw Error('Start and deploy the local chain first. See README.');
+  const config=JSON.parse(await load('chain/deployment.json','null')) || {
+    rpc: process.env.RPC_URL || 'http://127.0.0.1:8545',
+    address: '0x0000000000000000000000000000000000000000',
+    abi: []
+  };
   const {Contract,JsonRpcProvider}=await import('ethers');
   const provider=new JsonRpcProvider(config.rpc);
   return {Contract,provider,config};
 }
+const isVercel=Boolean(process.env.VERCEL);
 const port=Number(process.env.SCAMTHREADS_PORT || 8787);
 if(!Number.isInteger(port)||port<1024||port>65535)throw Error('SCAMTHREADS_PORT must be between 1024 and 65535.');
 const hosts=[`127.0.0.1:${port}`,`localhost:${port}`];
@@ -60,10 +68,13 @@ let active=0;
 export const server=http.createServer(async(req,res)=>{
   try{
     const path=(req.url||'/').split('?')[0];
+    const host=req.headers.host || '';
     const origin=req.headers.origin;
-    if(!hosts.includes(req.headers.host))
-      return json(res,403,{error:'Local host required.'});
-    if(origin && !/^chrome-extension:\/\/[a-p]{32}$/.test(origin) && !hosts.map(host=>'http://'+host).includes(origin))
+    const isLocalHost=hosts.includes(host);
+    const isVercelHost=isVercel || host.endsWith('.vercel.app') || host.includes('vercel');
+    if(!isLocalHost && !isVercelHost)
+      return json(res,403,{error:'Authorized host required.'});
+    if(origin && !/^chrome-extension:\/\/[a-p]{32}$/.test(origin) && !hosts.map(h=>'http://'+h).includes(origin) && !origin.includes('vercel.app'))
       return json(res,403,{error:'Origin blocked.'});
     if(origin?.startsWith('chrome-extension://')){
       if(!['/api/scan','/api/threats'].includes(path))return json(res,403,{error:'Dashboard only.'});
@@ -211,7 +222,11 @@ export const server=http.createServer(async(req,res)=>{
           if(values.some(value=>previous.features?.[key]?.includes(value)))matches.push(key);
         if(matches.length)record.links.push({report:previous.id,matches});
       }
-      await appendFile(local('reports.jsonl'),JSON.stringify(record)+'\n');
+      try{
+        await appendFile(local('reports.jsonl'),JSON.stringify(record)+'\n');
+      }catch{
+        // Read-only filesystem in serverless environments
+      }
       reports.push(record);
       const evidenceList=Array.isArray(report.evidence)?report.evidence:[];
       const evidenceLeaves=evidenceList.map(e=>({id:e.id,leaf:leaf(e)}));
@@ -340,22 +355,29 @@ export const server=http.createServer(async(req,res)=>{
       return json(res,200,{verified:valid});
     }
     if(path==='/api/history'){
-      const {Contract,provider,config}=await registry();
       try{
-        const contract=new Contract(config.address,config.abi,provider);
-        const currentBlock=await provider.getBlockNumber();
-        const fromBlock=Math.max(0,currentBlock-1000);
-        const regEvents=await contract.queryFilter(contract.filters.Registered(),fromBlock);
-        const revEvents=await contract.queryFilter(contract.filters.Revised(),fromBlock);
-        const valEvents=await contract.queryFilter(contract.filters.Validated(),fromBlock);
-        const dispEvents=await contract.queryFilter(contract.filters.Disputed(),fromBlock);
+        const {Contract,provider,config}=await registry();
+        try{
+          const contract=new Contract(config.address,config.abi,provider);
+          const currentBlock=await provider.getBlockNumber();
+          const fromBlock=Math.max(0,currentBlock-1000);
+          const regEvents=await contract.queryFilter(contract.filters.Registered(),fromBlock);
+          const revEvents=await contract.queryFilter(contract.filters.Revised(),fromBlock);
+          const valEvents=await contract.queryFilter(contract.filters.Validated(),fromBlock);
+          const dispEvents=await contract.queryFilter(contract.filters.Disputed(),fromBlock);
+          return json(res,200,{
+            registered:regEvents.map(e=>({commitment:e.args[0],reporter:e.args[1],blockNumber:e.blockNumber})),
+            revised:revEvents.map(e=>({oldCommitment:e.args[0],newCommitment:e.args[1],blockNumber:e.blockNumber})),
+            validated:valEvents.map(e=>({commitment:e.args[0],validator:e.args[1],count:Number(e.args[2]),blockNumber:e.blockNumber})),
+            disputed:dispEvents.map(e=>({commitment:e.args[0],disputer:e.args[1],count:Number(e.args[3]),blockNumber:e.blockNumber}))
+          });
+        }finally{provider.destroy();}
+      }catch{
         return json(res,200,{
-          registered:regEvents.map(e=>({commitment:e.args[0],reporter:e.args[1],blockNumber:e.blockNumber})),
-          revised:revEvents.map(e=>({oldCommitment:e.args[0],newCommitment:e.args[1],blockNumber:e.blockNumber})),
-          validated:valEvents.map(e=>({commitment:e.args[0],validator:e.args[1],count:Number(e.args[2]),blockNumber:e.blockNumber})),
-          disputed:dispEvents.map(e=>({commitment:e.args[0],disputer:e.args[1],count:Number(e.args[3]),blockNumber:e.blockNumber}))
+          registered:[],revised:[],validated:[],disputed:[],
+          notice:'Blockchain node offline or contract not deployed. Start local Ganache node or connect testnet.'
         });
-      }finally{provider.destroy();}
+      }
     }
     return json(res,404,{error:'Not found'});
   }catch(error){if(!res.headersSent)json(res,400,{error:String(error.message)});}
@@ -367,4 +389,10 @@ server.on('error',error=>{
     : error.message);
   process.exitCode=1;
 });
-server.listen(port,'127.0.0.1',()=>console.log(`HackMatrix: http://127.0.0.1:${port}`));
+if(!isVercel && process.env.NODE_ENV !== 'test'){
+  server.listen(port,'127.0.0.1',()=>console.log(`HackMatrix: http://127.0.0.1:${port}`));
+}
+
+export default function handler(req, res) {
+  server.emit('request', req, res);
+}
