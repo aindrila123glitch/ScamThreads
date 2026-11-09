@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detection accuracy — Scam Threads</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="Scam Threads home">
+        <svg class="brand-logo" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3L6 8.5v11.5c0 9.2 6 15.3 14 17.5 8-2.2 14-8.3 14-17.5V8.5L20 3z" stroke="var(--thread)" stroke-width="2.6" stroke-linejoin="round" fill="var(--thread-soft)" fill-opacity="0.4"/>
+          <path d="M14 18c0-3.3 2.7-6 6-6s6 2.7 6 6c0 3.8-3 6.5-6 6.5s-6 2.7-6 6" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cx="20" cy="18" r="3.2" fill="var(--thread)"/>
+          <path d="M20 12v-2M20 30v-2M12 20h-2M30 20h-2" stroke="var(--thread)" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div class="brand-text">
+          <div class="brand-title-row">
+            <span class="brand-name">Scam Threads</span>
+            <span class="brand-badge">Security</span>
+          </div>
+          <span class="brand-tagline">AI · Cybersecurity · Web3 Trust Intelligence</span>
+        </div>
+      </a>
+      <nav aria-label="Main">
+        <a href="/link">Link</a>
+        <a href="/message">Message</a>
+        <a href="/file">File</a>
+        <a href="/qr">QR code</a>
+        <a href="/reports">Reports</a>
+        <a href="/watch">Watch</a>
+        <a href="/accuracy" aria-current="page">Accuracy</a>
+        <a href="/help">Help</a>
+        <div class="theme-picker">
+          <select id="theme-select" aria-label="Color scheme">
+            <option value="caramel">Caramel &amp; Cream (Default)</option>
+            <option value="espresso">Espresso Dark Vault</option>
+            <option value="emerald">Cyber Emerald</option>
+            <option value="cyan">Electric Cyan</option>
+            <option value="violet">Cyber Violet</option>
+            <option value="crimson">Crimson Alert</option>
+            <option value="light">Clean Light</option>
+          </select>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Detection accuracy benchmark</h1>
+    <p class="lede">Tested on 100 known-good and 60 known-bad links. We measure real-world precision and false alarms.</p>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:10px;">
+      <span id="benchmark-timestamp" style="color:var(--muted);">Loading benchmark data…</span>
+      <button id="reload-btn" class="alt" style="padding:8px 18px; min-height:40px;">Reload benchmark</button>
+    </div>
+
+    <!-- Summary cards -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px; margin-bottom:34px;">
+      <div class="card-box" style="margin:0; text-align:center;">
+        <div style="font-size:2.4rem; font-weight:700; color:var(--thread);" id="acc-value">100%</div>
+        <div style="color:var(--muted); font-weight:700; font-size:0.95rem;">Overall Accuracy</div>
+      </div>
+      <div class="card-box" style="margin:0; text-align:center;">
+        <div style="font-size:2.4rem; font-weight:700; color:var(--ok);" id="fp-value">0</div>
+        <div style="color:var(--muted); font-weight:700; font-size:0.95rem;">False Alarms</div>
+      </div>
+      <div class="card-box" style="margin:0; text-align:center;">
+        <div style="font-size:2.4rem; font-weight:700; color:var(--ink);" id="total-value">160</div>
+        <div style="color:var(--muted); font-weight:700; font-size:0.95rem;">Test Samples</div>
+      </div>
+    </div>
+
+    <!-- Breakdown Table -->
+    <section class="block">
+      <h2>Test breakdown</h2>
+      <table>
+        <thead><tr><th>Metric</th><th>Count</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Threats caught</td><td id="tp-count">60</td><td>Phishing links correctly flagged</td></tr>
+          <tr><td>Legitimate cleared</td><td id="tn-count">100</td><td>Genuine websites confirmed safe</td></tr>
+          <tr><td>False alarms</td><td id="fp-count">0</td><td>Legitimate sites wrongly blocked</td></tr>
+          <tr><td>Missed threats</td><td id="fn-count">0</td><td>Phishing links slipped past</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Error list if any -->
+    <section class="block" id="errors-card" style="display:none;">
+      <h2>Recorded Mistakes</h2>
+      <ul id="errors-list" class="why"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p style="margin: 0 0 10px 0;">Scam Threads gives advice, not guarantees. A clear result means we found no warning signs in the checks we ran.</p>
+    <div>
+      <a href="/about">How it works &amp; glossary</a>
+      <a href="/accuracy">Accuracy benchmark</a>
+      <a href="/help">Emergency response (1930)</a>
+    </div>
+  </footer>
+
+  <script type="module" src="/pages/accuracy.js"></script>
+</body>
+</html>

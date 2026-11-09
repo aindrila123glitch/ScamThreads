@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Is this file safe? — Scam Threads</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="Scam Threads home">
+        <svg class="brand-logo" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3L6 8.5v11.5c0 9.2 6 15.3 14 17.5 8-2.2 14-8.3 14-17.5V8.5L20 3z" stroke="var(--thread)" stroke-width="2.6" stroke-linejoin="round" fill="var(--thread-soft)" fill-opacity="0.4"/>
+          <path d="M14 18c0-3.3 2.7-6 6-6s6 2.7 6 6c0 3.8-3 6.5-6 6.5s-6 2.7-6 6" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cx="20" cy="18" r="3.2" fill="var(--thread)"/>
+          <path d="M20 12v-2M20 30v-2M12 20h-2M30 20h-2" stroke="var(--thread)" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div class="brand-text">
+          <div class="brand-title-row">
+            <span class="brand-name">Scam Threads</span>
+            <span class="brand-badge">Security</span>
+          </div>
+          <span class="brand-tagline">AI · Cybersecurity · Web3 Trust Intelligence</span>
+        </div>
+      </a>
+      <nav aria-label="Main">
+        <a href="/link">Link</a>
+        <a href="/message">Message</a>
+        <a href="/file" aria-current="page">File</a>
+        <a href="/qr">QR code</a>
+        <a href="/reports">Reports</a>
+        <a href="/watch">Watch</a>
+        <a href="/accuracy">Accuracy</a>
+        <a href="/help">Help</a>
+        <div class="theme-picker">
+          <select id="theme-select" aria-label="Color scheme">
+            <option value="caramel">Caramel &amp; Cream (Default)</option>
+            <option value="espresso">Espresso Dark Vault</option>
+            <option value="emerald">Cyber Emerald</option>
+            <option value="cyan">Electric Cyan</option>
+            <option value="violet">Cyber Violet</option>
+            <option value="crimson">Crimson Alert</option>
+            <option value="light">Clean Light</option>
+          </select>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Is this file or download safe?</h1>
+    <p class="lede">Inspect an unknown download or attachment before opening it. The file is never opened or run. Only its fingerprint is checked.</p>
+
+    <!-- Tab buttons -->
+    <div style="display:flex; gap:10px; margin-bottom:20px;">
+      <button id="tab-upload-btn" type="button">Upload a file</button>
+      <button id="tab-url-btn" class="alt" type="button">Paste a download link</button>
+    </div>
+
+    <div class="check">
+      <!-- Panel 1: Upload a file -->
+      <form id="upload-form">
+        <label for="file-input">Choose a file to check (up to 25 MB)</label>
+        <div class="row">
+          <input type="file" id="file-input" required>
+          <button type="submit" id="upload-submit-btn">Check file</button>
+        </div>
+        <p class="field-hint">Supports executables (.exe), scripts (.bat, .ps1, .vbs), archives (.zip), and documents (.pdf).</p>
+      </form>
+
+      <!-- Panel 2: Paste download link -->
+      <form id="download-form" style="display:none;">
+        <label for="download-url-input">Direct download link</label>
+        <div class="row">
+          <input type="url" id="download-url-input" placeholder="https://example.com/software.exe" autocomplete="off" spellcheck="false" required>
+          <button type="submit" id="download-submit-btn">Inspect link</button>
+        </div>
+        <p class="field-hint">We safely download up to 10 MB into memory to inspect its binary format signatures.</p>
+      </form>
+    </div>
+
+    <div id="status-area" style="display:none;" aria-live="polite"></div>
+    <div id="result-container" aria-live="polite"></div>
+  </main>
+
+  <footer>
+    <p style="margin: 0 0 10px 0;">Scam Threads gives advice, not guarantees. A clear result means we found no warning signs in the checks we ran.</p>
+    <div>
+      <a href="/about">How it works &amp; glossary</a>
+      <a href="/accuracy">Accuracy benchmark</a>
+      <a href="/help">Emergency response (1930)</a>
+    </div>
+  </footer>
+
+  <script type="module" src="/pages/file.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scam Threads — Digital trust and threat intelligence</title>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="/" aria-label="Scam Threads home" aria-current="page">
+        <svg class="brand-logo" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3L6 8.5v11.5c0 9.2 6 15.3 14 17.5 8-2.2 14-8.3 14-17.5V8.5L20 3z" stroke="var(--thread)" stroke-width="2.6" stroke-linejoin="round" fill="var(--thread-soft)" fill-opacity="0.4"/>
+          <path d="M14 18c0-3.3 2.7-6 6-6s6 2.7 6 6c0 3.8-3 6.5-6 6.5s-6 2.7-6 6" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cx="20" cy="18" r="3.2" fill="var(--thread)"/>
+          <path d="M20 12v-2M20 30v-2M12 20h-2M30 20h-2" stroke="var(--thread)" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div class="brand-text">
+          <div class="brand-title-row">
+            <span class="brand-name">Scam Threads</span>
+            <span class="brand-badge">Security</span>
+          </div>
+          <span class="brand-tagline">AI · Cybersecurity · Web3 Trust Intelligence</span>
+        </div>
+      </a>
+      <nav aria-label="Main">
+        <a href="/link">Link</a>
+        <a href="/message">Message</a>
+        <a href="/file">File</a>
+        <a href="/qr">QR code</a>
+        <a href="/reports">Reports</a>
+        <a href="/watch">Watch</a>
+        <a href="/accuracy">Accuracy</a>
+        <a href="/help">Help</a>
+        <div class="theme-picker">
+          <select id="theme-select" aria-label="Color scheme">
+            <option value="caramel">Caramel &amp; Cream (Default)</option>
+            <option value="espresso">Espresso Dark Vault</option>
+            <option value="emerald">Cyber Emerald</option>
+            <option value="cyan">Electric Cyan</option>
+            <option value="violet">Cyber Violet</option>
+            <option value="crimson">Crimson Alert</option>
+            <option value="light">Clean Light</option>
+          </select>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Is this link or message safe?</h1>
+    <p class="lede">Investigate suspicious links, messages, files, and QR codes before you click, pay, or share passwords.</p>
+
+    <!-- Quick check box -->
+    <div class="check" style="margin-bottom:44px;">
+      <form id="quick-link-form">
+        <label for="quick-url-input">Quick link check</label>
+        <div class="row">
+          <input id="quick-url-input" type="text" placeholder="https://example.com/login" autocomplete="off" spellcheck="false" required>
+          <button type="submit">Check link</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 6 Chooser cards -->
+    <h2>What would you like to check?</h2>
+    <div class="chooser-grid">
+      <a href="/link" class="chooser-card">
+        <div class="chooser-title">Check a link</div>
+        <p class="chooser-desc">Inspect website addresses for typosquatting, fake portals, and hidden redirect chains.</p>
+      </a>
+
+      <a href="/message" class="chooser-card">
+        <div class="chooser-title">Check a message</div>
+        <p class="chooser-desc">Paste SMS alerts, WhatsApp messages, or emails to detect panic language and extracted payment IDs.</p>
+      </a>
+
+      <a href="/file" class="chooser-card">
+        <div class="chooser-title">Check a file</div>
+        <p class="chooser-desc">Inspect downloads and payloads safely in memory without opening or executing them on your device.</p>
+      </a>
+
+      <a href="/qr" class="chooser-card">
+        <div class="chooser-title">Scan a QR code</div>
+        <p class="chooser-desc">Decode QR images to reveal where they lead and uncover disguised UPI money deduction requests.</p>
+      </a>
+
+      <a href="/reports" class="chooser-card">
+        <div class="chooser-title">Reports &amp; proof</div>
+        <p class="chooser-desc">Export security evidence packages and record tamper-proof cryptographic proofs on the local blockchain.</p>
+      </a>
+
+      <a href="/help" class="chooser-card alt">
+        <div class="chooser-title" style="color:var(--high);">I already clicked something</div>
+        <p class="chooser-desc">Emergency recovery checklist and 24/7 helpline numbers (1930) if you entered passwords or sent money.</p>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <p style="margin: 0 0 10px 0;">Scam Threads gives advice, not guarantees. A clear result means we found no warning signs in the checks we ran.</p>
+    <div>
+      <a href="/about">How it works &amp; glossary</a>
+      <a href="/accuracy">Accuracy benchmark</a>
+      <a href="/help">Emergency response (1930)</a>
+    </div>
+  </footer>
+
+  <script type="module" src="/pages/home.js"></script>
+</body>
+</html>
