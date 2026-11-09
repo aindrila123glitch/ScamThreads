@@ -66,7 +66,7 @@ function renderResults(list) {
 
     const tdAct = document.createElement('td');
     const a = document.createElement('a');
-    a.href = '/link?u=' + encodeURIComponent('https://' + item.host);
+    a.href = './link.html?u=' + encodeURIComponent('https://' + item.host);
     a.textContent = 'Check link →';
     tdAct.append(a);
 

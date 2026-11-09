@@ -11,7 +11,7 @@ if (quickForm && quickInput) {
     event.preventDefault();
     const url = quickInput.value.trim();
     if (url) {
-      window.location.href = '/link?u=' + encodeURIComponent(url);
+      window.location.href = './link.html?u=' + encodeURIComponent(url);
     }
   });
 }

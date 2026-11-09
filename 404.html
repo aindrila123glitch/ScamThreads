@@ -1,0 +1,28 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scam Threads — Redirecting…</title>
+  <script>
+    (function () {
+      const loc = window.location;
+      const path = loc.pathname;
+      const segments = path.split('/').filter(Boolean);
+      // If repo subpath exists, find page name
+      const last = segments[segments.length - 1] || '';
+      const valid = ['link', 'message', 'file', 'qr', 'reports', 'watch', 'accuracy', 'help', 'about'];
+      const target = valid.find(v => last === v || last === v + '.html');
+      const base = loc.pathname.replace(new RegExp('/' + last + '$'), '');
+      if (target) {
+        window.location.replace(base + '/' + target + '.html' + loc.search + loc.hash);
+      } else {
+        window.location.replace(base + '/index.html' + loc.search + loc.hash);
+      }
+    })();
+  </script>
+</head>
+<body style="font-family:system-ui,sans-serif; padding:40px; text-align:center;">
+  <h2>Redirecting to Scam Threads…</h2>
+  <p><a href="./index.html">Click here if not redirected automatically.</a></p>
+</body>
+</html>
