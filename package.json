@@ -1,0 +1,21 @@
+{
+  "name": "scamthreads-guard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test",
+    "chain": "ganache --server.host 127.0.0.1 --chain.chainId 1337 --database.dbPath ./chain/db",
+    "deploy": "node chain/deploy.mjs",
+    "intel:update": "node scripts/update-intel.mjs",
+    "eval": "node eval/run.mjs",
+    "sync-ext": "node scripts/sync-ext.mjs"
+  },
+  "dependencies": {
+    "ethers": "^6.13.0",
+    "ganache": "7.9.2",
+    "jsqr": "^1.4.0",
+    "solc": "0.8.28"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "evaluatedAt": "2026-11-09T19:36:36.393Z",
+  "dataset": {
+    "benignSamples": 100,
+    "phishingSamples": 60,
+    "totalSamples": 160
+  },
+  "confusionMatrix": {
+    "truePositives": 60,
+    "falsePositives": 0,
+    "trueNegatives": 100,
+    "falseNegatives": 0
+  },
+  "metrics": {
+    "accuracy": 100,
+    "precision": 100,
+    "recall": 100,
+    "f1Score": 100
+  },
+  "falsePositives": [],
+  "falseNegatives": []
+}

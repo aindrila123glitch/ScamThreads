@@ -1,0 +1,9 @@
+node_modules/
+reports.jsonl
+chain/deployment.json
+chain/db/
+urlhaus.txt
+distrust.json
+.campaign-key
+brands.json
+malware-hashes.txt
