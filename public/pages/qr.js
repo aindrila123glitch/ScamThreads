@@ -138,7 +138,7 @@ function renderDecodedQr(raw) {
 
     const btn = document.createElement('a');
     btn.className = 'btn';
-    btn.href = '/link?u=' + encodeURIComponent(raw);
+    btn.href = './link.html?u=' + encodeURIComponent(raw);
     btn.textContent = 'Check this link →';
     resultBox.append(btn);
   } else {

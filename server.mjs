@@ -74,13 +74,12 @@ export const server=http.createServer(async(req,res)=>{
     const isVercelHost=isVercel || host.endsWith('.vercel.app') || host.includes('vercel');
     if(!isLocalHost && !isVercelHost)
       return json(res,403,{error:'Authorized host required.'});
-    if(origin && !/^chrome-extension:\/\/[a-p]{32}$/.test(origin) && !hosts.map(h=>'http://'+h).includes(origin) && !origin.includes('vercel.app'))
+    if(origin && !/^chrome-extension:\/\/[a-p]{32}$/.test(origin) && !hosts.map(h=>'http://'+h).includes(origin) && !origin.includes('vercel.app') && !origin.includes('github.io'))
       return json(res,403,{error:'Origin blocked.'});
-    if(origin?.startsWith('chrome-extension://')){
-      if(!['/api/scan','/api/threats'].includes(path))return json(res,403,{error:'Dashboard only.'});
+    if(origin && (origin.includes('github.io') || origin.includes('vercel.app') || origin.startsWith('chrome-extension://'))){
       res.setHeader('Access-Control-Allow-Origin',origin);
       res.setHeader('Vary','Origin');
-      res.setHeader('Access-Control-Allow-Headers','Content-Type');
+      res.setHeader('Access-Control-Allow-Headers','Content-Type, X-Filename');
       res.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
     }
     if(req.method==='OPTIONS')return json(res,204,null);
